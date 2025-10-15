@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Portfolio - Cao Phước Hưng</title>
+    <!-- Tải Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Cấu hình Font và Tailwind -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+        /* Cấu hình Tailwind và Font Inter */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Nền tối */
+            color: #c9d1d9; /* Chữ sáng */
+            overflow-x: hidden;
+        }
+
+        /* Định nghĩa Animation Fade In */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Định nghĩa Animation Float cho Avatar */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .animated-content {
+            animation: fadeIn 1s ease-out both;
+        }
+
+        .profile-photo {
+            animation: float 4s ease-in-out infinite;
+            box-shadow: 0 0 40px rgba(0, 126, 255, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        /* Thêm Gradient Border cho các thẻ (Áp dụng cho Card chung) */
+        .card-border {
+            border: 2px solid transparent;
+            background-image: linear-gradient(#0d1117, #0d1117), linear-gradient(to right, #0077b6, #00b4d8);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+
+        /* Styling cho Scrollbar (Personal Touch) */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #161b22;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0077b6;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00b4d8;
+        }
+        
+        /* Custom Timeline styling for Experience & Education */
+        .timeline {
+            border-left: 2px solid #0077b6;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2.5rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.0rem; /* Adjust to align with border-left */
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background-color: #00b4d8;
+            border: 3px solid #0d1117;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        /* === HIỆU ỨNG MỚI CHO THƯ VIỆN ẢNH VÀ SỞ THÍCH (#gallery, #hobby-images) === */
+        
+        /* Container chung cho hình ảnh (Bao gồm hình ảnh Sở Thích) */
+        .image-container {
+            overflow: hidden;
+            border-radius: 0.75rem; /* rounded-xl */
+            background-color: #161b22;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        box-shadow 0.5s ease-out, 
+                        border 0.5s ease-out; /* Thêm transition cho border */
+            
+            /* Cấu hình 3D cho hiệu ứng nghiêng */
+            transform-style: preserve-3d;
+            perspective: 1000px; 
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Bóng tối ban đầu */
+        }
+
+        /* Hiệu ứng khi hover */
+        .image-container:hover {
+            /* Hiệu ứng Phóng to và Đổ bóng */
+            transform: scale(1.05) rotateX(1deg) rotateY(1deg); /* Phóng to và Nghiêng nhẹ 3D */
+            box-shadow: 0 0 35px rgba(0, 180, 216, 0.9), /* Bóng xanh nổi bật */
+                        0 8px 30px rgba(0, 0, 0, 0.6); /* Bóng tối sâu hơn */
+            
+            /* Hiệu ứng Viền Sáng (Glowing Border) */
+            border-color: #00b4d8; 
+            border-width: 2px;
+        }
+        
+        /* Hình ảnh bên trong (Đảm bảo không bị scale nhân đôi) */
+        .image-content {
+            transition: transform 0.5s ease-out;
+            transform: translateZ(0); /* Đảm bảo hình ảnh được hiển thị trong không gian 3D */
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    </style>
+</head>
+<body class="selection:bg-cyan-500 selection:text-white">
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-50 bg-[#0d1117]/90 backdrop-blur-sm shadow-xl p-4 md:px-8">
+        <nav class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-[#00b4d8]">CV<span class="text-white">Portfolio</span></h1>
+            <!-- Nav links (Hidden on mobile, shown on desktop) -->
+            <ul class="hidden lg:flex space-x-6 text-sm font-medium">
+                <li><a href="#about" class="hover:text-[#0077b6] transition-colors">Thông tin</a></li>
+                <li><a href="#contact" class="hover:text-[#0077b6] transition-colors">Liên hệ</a></li>
+                <li><a href="#hobbies" class="hover:text-[#0077b6] transition-colors">Sở thích</a></li>
+                <li><a href="#gallery" class="hover:text-[#0077b6] transition-colors">Thư viện Ảnh</a></li>
+                <li><a href="#experience" class="hover:text-[#0077b6] transition-colors">Kinh nghiệm</a></li>
+                <li><a href="#education" class="hover:text-[#0077b6] transition-colors">Giáo dục</a></li>
+                <li><a href="#skills" class="hover:text-[#0077b6] transition-colors">Kỹ năng</a></li>
+                <li><a href="#projects" class="hover:text-[#0077b6] transition-colors">Dự án</a></li>
+                <li><a href="#portfolio" class="hover:text-[#0077b6] transition-colors">Tác phẩm</a></li>
+            </ul>
+            <!-- Download Button -->
+            <button onclick="alert('Chức năng tải file CV sẽ được thực hiện tại đây. Vui lòng thêm logic tải file thực tế.');"
+                    class="flex items-center space-x-2 bg-[#0077b6] hover:bg-[#00b4d8] text-white font-semibold py-2 px-4 rounded-lg shadow-lg transition duration-300 transform hover:scale-[1.03]">
+                <i data-lucide="download"></i>
+                <span>Tải CV (PDF)</span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-8 space-y-16 animated-content">
+
+        <!-- Phần 1: Thông tin cá nhân & Giới thiệu (Sử dụng Flex) -->
+        <section id="about" class="flex flex-col lg:flex-row items-center lg:items-start space-y-8 lg:space-y-0 lg:space-x-12 pt-12">
+            
+            <!-- Ảnh Đại Diện (30% chiều rộng trên Desktop) -->
+            <div class="lg:w-1/3 flex justify-center">
+                <div class="relative w-64 h-64 md:w-80 md:h-80">
+                    <img src="images/Hung1.jpg" alt="Ảnh cá nhân Cao Phước Hưng"
+                         class="profile-photo w-full h-full object-cover rounded-full border-4 border-[#0077b6]"
+                         onerror="this.src='https://placehold.co/320x320/0077b6/ffffff?text=AVATAR_LOI'">
+                </div>
+            </div>
+
+            <!-- Nội dung Giới thiệu (70% chiều rộng trên Desktop) -->
+            <div class="lg:w-2/3 space-y-6 text-center lg:text-left">
+                <span class="text-[#00b4d8] text-lg font-medium tracking-widest uppercase">Kỹ sư Công Nghệ Thông Tin</span>
+                <h2 class="text-5xl md:text-7xl font-extrabold text-white leading-tight">
+                    CAO PHƯỚC <span class="text-[#0077b6]">HƯNG</span>
+                </h2>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto lg:mx-0">
+                    Tôi là một Kỹ Sư Công Nghệ Thông Tin với 4 năm kinh nghiệm chuyên sâu trong lĩnh vực Thiết Kế Đồ Họa, C#. Tôi không chỉ viết code hay thiết kế, mà còn đảm bảo tính ổn định, bảo mật và khả năng mở rộng của toàn bộ kiến trúc công nghệ.
+                </p>
+            </div>
+        </section>
+
+        <!-- Phần 2: Liên hệ -->
+        <section id="contact" class="pt-12">
+            
+            <div class="max-w-xl mx-auto space-y-4 p-6 bg-[#161b22] rounded-xl card-border">
+                
+                <!-- Tiêu đề đã được sửa thành "Liên hệ" -->
+                <h4 class="text-2xl font-bold text-white border-b border-[#0077b6]/50 pb-2 mb-4">Liên hệ</h4>
+                
+                <!-- Họ và Tên -->
+                <div class="flex items-center space-x-3 p-3 bg-[#0d1117] rounded-lg shadow-inner">
+                    <i data-lucide="user" class="w-5 h-5 text-[#00b4d8]"></i>
+                    <div>
+                        <p class="text-sm text-gray-400">Họ và Tên</p>
+                        <p class="font-medium text-white">Cao Phước Hưng</p>
+                    </div>
+                </div>
+
+                <!-- Quê Quán (Đã thêm) -->
+                <div class="flex items-center space-x-3 p-3 bg-[#0d1117] rounded-lg shadow-inner">
+                    <i data-lucide="home" class="w-5 h-5 text-[#00b4d8]"></i>
+                    <div>
+                        <p class="text-sm text-gray-400">Quê quán</p>
+                        <p class="font-medium text-white">Tây Ninh</p>
+                    </div>
+                </div>
+                
+                <!-- Gmail -->
+                <div class="flex items-center space-x-3 p-3 bg-[#0d1117] rounded-lg shadow-inner">
+                    <i data-lucide="mail" class="w-5 h-5 text-[#00b4d8]"></i>
+                    <div>
+                        <p class="text-sm text-gray-400">Gmail</p>
+                        <p class="font-medium text-white">caohung.010172@gmail.com</p>
+                    </div>
+                </div>
+
+                <!-- Số Điện Thoại -->
+                <div class="flex items-center space-x-3 p-3 bg-[#0d1117] rounded-lg shadow-inner">
+                    <i data-lucide="phone" class="w-5 h-5 text-[#00b4d8]"></i>
+                    <div>
+                        <p class="text-sm text-gray-400">Số Điện Thoại</p>
+                        <p class="font-medium text-white">(+84) 971 234 567</p>
+                    </div>
+                </div>
+                
+                <!-- Các liên kết mạng xã hội -->
+                <div class="pt-4 space-y-3 border-t border-gray-700/50">
+                    <h4 class="text-xl font-semibold text-[#00b4d8] mt-4">Mạng Xã Hội</h4>
+                    <a href="https://www.facebook.com/share/17URhWoJPn/" target="_blank" class="flex items-center space-x-3 p-3 bg-[#0d1117] rounded-lg shadow-inner transition duration-300 hover:bg-[#0077b6]/30">
+                        <i data-lucide="facebook" class="w-5 h-5 text-white"></i>
+                        <span class="font-medium text-white">Facebook </span>
+                    </a>
+                    <a href="https://github.com/vana-dev" target="_blank" class="flex items-center space-x-3 p-3 bg-[#0d1117] rounded-lg shadow-inner transition duration-300 hover:bg-[#0077b6]/30">
+                        <i data-lucide="github" class="w-5 h-5 text-white"></i>
+                        <span class="font-medium text-white">GitHub </span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phần 3: Sở thích -->
+        <section id="hobbies" class="pt-12">
+            <h3 class="text-3xl font-bold mb-8 text-center text-white">SỞ THÍCH CÁ NHÂN</h3>
+            
+            <!-- Flex Layout cho Hobbies (Tự động xuống dòng) -->
+            <div class="flex flex-wrap justify-center gap-6">
+                
+                <div class="flex flex-col items-center p-6 bg-[#161b22] rounded-xl card-border transition duration-300 hover:bg-[#0077b6]/30 hover:scale-[1.05] w-36 text-center">
+                    <i data-lucide="palette" class="w-10 h-10 text-[#00b4d8] mb-2"></i> 
+                    <span class="font-medium text-white">Hội Họa</span> 
+                    <span class="text-xs text-gray-400">Sáng tạo, Nghệ Thuật </span> 
+                </div>
+
+                <div class="flex flex-col items-center p-6 bg-[#161b22] rounded-xl card-border transition duration-300 hover:bg-[#0077b6]/30 hover:scale-[1.05] w-36 text-center">
+                    <i data-lucide="headphones" class="w-10 h-10 text-[#00b4d8] mb-2"></i> 
+                    <span class="font-medium text-white">Nghe Nhạc</span>
+                    <span class="text-xs text-gray-400">Thư giãn, Tạo cảm hứng</span>
+                </div>
+
+                <div class="flex flex-col items-center p-6 bg-[#161b22] rounded-xl card-border transition duration-300 hover:bg-[#0077b6]/30 hover:scale-[1.05] w-36 text-center">
+                    <i data-lucide="film" class="w-10 h-10 text-[#00b4d8] mb-2"></i> 
+                    <span class="font-medium text-white">Xem Phim</span> 
+                    <span class="text-xs text-gray-400">Giải trí, Học Hỏi</span> 
+                </div>
+            </div>
+        </section>
+
+        <!-- Phần 4: Hình Ảnh Sở Thích -->
+        <section id="hobby-images" class="pt-6">
+            <h4 class="text-2xl font-bold mb-4 text-center text-[#00b4d8]">Khoảnh Khắc Sở Thích</h4>
+            
+            <!-- Grid 3 cột cho hình ảnh sở thích -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                
+                <!-- Ảnh 1: Đọc sách (Sử dụng CSS .image-container) -->
+                <div class="image-container border-2 border-[#161b22] cursor-pointer">
+                    <img src="images/Art.jpg" alt="Hội Họa" class="image-content aspect-[4/3]"
+                         onerror="this.src='https://placehold.co/400x300/161b22/00b4d8?text=Hội+Họa_LỖI'">
+                </div>
+                
+                <!-- Ảnh 2: Chơi game (Sử dụng CSS .image-container) -->
+                <div class="image-container border-2 border-[#161b22] cursor-pointer">
+                    <img src="images/Music.jpg" alt="Nghe Nhạc" class="image-content aspect-[4/3]"
+                         onerror="this.src='https://placehold.co/400x300/161b22/00b4d8?text=Nghe+Nhạc_LỖI'">
+                </div>
+                
+                <!-- Ảnh 3: Du lịch (Sử dụng CSS .image-container) -->
+                <div class="image-container border-2 border-[#161b22] cursor-pointer">
+                    <img src="images/Film.jpg" alt="Xem Phim" class="image-content aspect-[4/3]"
+                         onerror="this.src='https://placehold.co/400x300/161b22/00b4d8?text=Xem+Phim_LỖI'">
+                </div>
+            </div>
+        </section>
+
+        <!-- Phần 5: Thư viện Hình ảnh (ĐÃ DI CHUYỂN LÊN) -->
+        <section id="gallery" class="pt-12">
+            <h3 class="text-3xl font-bold mb-8 text-center text-white">THƯ VIỆN ẢNH CÁ NHÂN</h3>
+            
+            <!-- Grid Layout cho Gallery (4 cột trên desktop, 2 cột trên tablet, 1 cột trên mobile) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+              
+                <div class="image-container border-2 border-[#161b22] cursor-pointer">
+                    <img src="images/Hung3.jpg" alt="Hình ảnh 3" class="image-content aspect-[3/2]"
+                         onerror="this.src='https://placehold.co/600x400/0077b6/ffffff?text=Hinh+Anh+1_LOI'">
+                </div>
+                
+                <div class="image-container border-2 border-[#161b22] cursor-pointer">
+                    <img src="images/Hung4.jpg" alt="Hình ảnh 4" class="image-content aspect-[3/2]"
+                         onerror="this.src='https://placehold.co/600x400/0077b6/ffffff?text=Hinh+Anh+3_LOI'">
+                </div>
+             
+                <div class="image-container border-2 border-[#161b22] cursor-pointer">
+                    <img src="images/Hung2.jpg" alt="Hình ảnh 2" class="image-content aspect-[3/2]"
+                         onerror="this.src='https://placehold.co/600x400/00b4d8/ffffff?text=Hinh+Anh+2_LOI'">
+                </div>
+
+                <div class="image-container border-2 border-[#161b22] cursor-pointer">
+                    <img src="images/Hung5.jpg" alt="Hình ảnh 5" class="image-content aspect-[3/2]"
+                         onerror="this.src='https://placehold.co/600x400/00b4d8/ffffff?text=Hinh+Anh+4_LOI'">
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- Phần 6: Kinh nghiệm làm việc -->
+        <section id="experience" class="pt-12">
+            <h3 class="text-3xl font-bold mb-8 text-center text-white">KINH NGHIỆM LÀM VIỆC</h3>
+            
+            <div class="timeline max-w-4xl mx-auto">
+                
+                <!-- Kinh nghiệm 1 -->
+                <div class="timeline-item card-border rounded-xl p-6 transition duration-300 hover:bg-[#161b22]/70">
+                    <p class="text-sm font-medium text-[#00b4d8] mb-1">1/2024</p>
+                    <h4 class="text-xl font-semibold text-white">Full-stack Developer</h4>
+                    <p class="text-gray-400 mb-2">Công ty Công nghệ XYZ | TP. Hồ Chí Minh</p>
+                    <ul class="list-disc text-sm text-gray-300 space-y-1 pl-4">
+                        <li>Phát triển và bảo trì các tính năng Frontend sử dụng React/Next.js cho hơn 5 dự án.</li>
+                        <li>Xây dựng API hiệu suất cao với Node.js và tối ưu hóa truy vấn MongoDB (giảm độ trễ $ > 30\%$).</li>
+                        <li>Đóng vai trò chính trong việc triển khai CI/CD bằng GitHub Actions.</li>
+                    </ul>
+                </div>
+
+                <!-- Kinh nghiệm 2 -->
+                <div class="timeline-item card-border rounded-xl p-6 transition duration-300 hover:bg-[#161b22]/70">
+                    <p class="text-sm font-medium text-[#00b4d8] mb-1">6/2021 - 12/2022</p>
+                    <h4 class="text-xl font-semibold text-white">Junior Frontend Developer</h4>
+                    <p class="text-gray-400 mb-2">Công ty Phần mềm ABC | Hà Nội</p>
+                    <ul class="list-disc text-sm text-gray-300 space-y-1 pl-4">
+                        <li>Chịu trách nhiệm chuyển đổi thiết kế Figma sang mã HTML/CSS/JavaScript (sử dụng jQuery).</li>
+                        <li>Hỗ trợ đội ngũ Backend tích hợp các API.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phần 7: Giáo dục -->
+        <section id="education" class="pt-12">
+            <h3 class="text-3xl font-bold mb-8 text-center text-white">QUÁ TRÌNH GIÁO DỤC</h3>
+            
+            <div class="timeline max-w-4xl mx-auto">
+                
+                
+                <div class="timeline-item card-border rounded-xl p-6 transition duration-300 hover:bg-[#161b22]/70">
+                    <p class="text-sm font-medium text-[#00b4d8] mb-1">2024</p>
+                    <h4 class="text-xl font-semibold text-white">Công nghệ Thông tin</h4>
+                    <p class="text-gray-400 mb-2">Đại học Bình Dương</p>
+                    <ul class="list-disc text-sm text-gray-300 space-y-1 pl-4">
+                        <li>Chuyên ngành: Công Nghệ Thông Tin</li>
+                        <li>Điểm trung bình (GPA): 2.68</li>
+                    </ul>
+                </div>
+
+                
+                <div class="timeline-item card-border rounded-xl p-6 transition duration-300 hover:bg-[#161b22]/70">
+                    <p class="text-sm font-medium text-[#00b4d8] mb-1">2023</p>
+                    <h4 class="text-xl font-semibold text-white">Trường THPT Trảng Bàng</h4>
+                    <p class="text-gray-400 mb-2">Tốt nghiệp THPT</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phần 8: Chuyên môn & Kỹ năng -->
+        <section id="skills" class="pt-12">
+            <h3 class="text-3xl font-bold mb-8 text-center text-white">CHUYÊN MÔN & KỸ NĂNG</h3>
+            
+            <!-- Grid Layout cho Skills (4 cột trên desktop, 2 cột trên tablet, 1 cột trên mobile) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Card 1: Frontend -->
+                <div class="card-border rounded-xl p-6 space-y-4 transition duration-500 hover:shadow-[0_0_50px_rgba(0,126,255,0.7)] hover:-translate-y-1">
+                    <i data-lucide="palette" class="w-8 h-8 text-[#00b4d8]"></i>
+                    <h4 class="text-xl font-semibold text-white">Thiết Kế Đồ Họa</h4>
+                    <p class="text-gray-400 text-sm">Tập trung vào tính thẩm mỹ và trải nghiệm người dùng.</p>
+                    <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2">
+                    <li>Thiết kế thương hiệu (Branding)</li>
+                    <li>Adobe Photoshop, Illustrator</li>
+                    <li>Thiết kế giao diện (UI/UX) với Figma</li>
+                </ul>
+                </div>
+
+                <!-- Card 2: Backend -->
+                <div class="card-border rounded-xl p-6 space-y-4 transition duration-500 hover:shadow-[0_0_50px_rgba(0,126,255,0.7)] hover:-translate-y-1">
+                    <i data-lucide="code-xml" class="w-8 h-8 text-[#00b4d8]"></i>
+                    <h4 class="text-xl font-semibold text-white">Lập Trình C#/.NET</h4>
+                    <p class="text-gray-400 text-sm">Xây dựng ứng dụng doanh nghiệp và phát triển game.</p>
+                    <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2">
+                    <li>C# và OOP (Hướng đối tượng)</li>
+                    <li>ASP.NET Core (Web API, MVC)</li>
+                    <li>Entity Framework Core, SQL Server</li>
+                </ul>
+                </div>
+
+                <!-- Card 3: DevOps/Tools -->
+                <div class="card-border rounded-xl p-6 space-y-4 transition duration-500 hover:shadow-[0_0_50px_rgba(0,126,255,0.7)] hover:-translate-y-1">
+                    <i data-lucide="zap" class="w-8 h-8 text-[#00b4d8]"></i>
+                    <h4 class="text-xl font-semibold text-white">Lập Trình C++</h4>
+                    <p class="text-gray-400 text-sm">Phát triển phần mềm hiệu năng cao và hệ thống.</p>
+                    <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2">
+                    <li>Quản lý bộ nhớ thủ công (Pointers)</li>
+                    <li>STL (Standard Template Library)</li>
+                    <li>Lập trình Game (Engine, DirectX/OpenGL)</li>
+                </ul>
+                </div>
+                
+                <!-- Card 4: UI/UX & Design -->
+                <div class="card-border rounded-xl p-6 space-y-4 transition duration-500 hover:shadow-[0_0_50px_rgba(0,126,255,0.7)] hover:-translate-y-1">
+                    <i data-lucide="code" class="w-8 h-8 text-[#00b4d8]"></i>
+                    <h4 class="text-xl font-semibold text-white">HTML & Cấu Trúc Web</h4>
+                    <p class="text-gray-400 text-sm">Xây dựng nền tảng và nội dung cho mọi trang web.</p>
+                    <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 pl-2">
+                    <li>Cấu trúc và Semantic HTML</li>
+                    <li>Tối ưu hóa SEO
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phần 9: Dự án (Đã tách khỏi Tác phẩm) -->
+        <section id="projects" class="pt-12">
+            <h3 class="text-3xl font-bold mb-8 text-center text-white">DỰ ÁN</h3>
+            
+            <div class="space-y-8">
+                
+                <!-- Dự án 1: Ứng dụng Quản lý Nhiệm vụ -->
+                <div class="card-border rounded-xl p-6 lg:p-8 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 transition duration-300 hover:bg-[#161b22]">
+                    <div class="md:w-1/4 flex-shrink-0">
+                        <img src="images/CF.png" alt="Dự án Thiết Kế Thương Hiệu" class="w-full rounded-lg shadow-xl object-cover"
+                             onerror="this.src='https://placehold.co/400x250/00b4d8/ffffff?text=Du+An+1_LOI'">
+                    </div>
+                    <div class="md:w-3/4 space-y-3">
+                        <h4 class="text-2xl font-bold text-[#00b4d8]">Thiết kế Thương hiệu (EcoBlend Coffee)</h4>
+                        <p class="text-gray-400">
+                            Dự án thiết kế thương hiệu hoàn chỉnh cho một chuỗi cà phê tập trung vào tính bền vững và nguồn gốc hữu cơ. Bao gồm phát triển logo, bảng màu, kiểu chữ, hướng dẫn sử dụng thương hiệu, và thiết kế bao bì sản phẩm mẫu.
+                        </p>
+                        <div class="flex flex-wrap gap-2 text-xs font-medium pt-2">
+                            <span class="bg-gray-700 text-white px-2 py-1 rounded-full">Adobe Illustrator (Logo/Vector)</span>
+                            <span class="bg-gray-700 text-white px-2 py-1 rounded-full">Figma (Thiết kế Giao diện/Mockup)</span>
+                            <span class="bg-gray-700 text-white px-2 py-1 rounded-full">Behance/Dribbble</span>
+                            <span class="bg-gray-700 text-white px-2 py-1 rounded-full">Web Portfolio (HTML/CSS)</span>
+                        </div>
+                        <a href="#" target="_blank" class="inline-flex items-center space-x-1 text-[#00b4d8] hover:text-[#0077b6] text-sm font-medium pt-2">
+                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                            <span>Xem Demo / Code</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Dự án 2: Trang Web Thương mại Điện tử -->
+                <div class="card-border rounded-xl p-6 lg:p-8 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 transition duration-300 hover:bg-[#161b22]">
+                    <div class="md:w-1/4 flex-shrink-0">
+                        <img src="images/QL.png" alt="Dự Án Quản lý Bán hàng" class="w-full rounded-lg shadow-xl object-cover"
+                             onerror="this.src='https://placehold.co/400x250/0077b6/ffffff?text=Du+An+2_LOI'">
+                    </div>
+                    <div class="md:w-3/4 space-y-3">
+                        <h4 class="text-2xl font-bold text-[#00b4d8]">Hệ thống Quản lý Bán hàng (ProSales POS)</h4>
+                        <p class="text-gray-400">
+                            Ứng dụng quản lý điểm bán hàng (Point of Sale) hoàn chỉnh, được xây dựng trên nền tảng .NET. Bao gồm quản lý kho, theo dõi đơn hàng, báo cáo doanh thu và giao diện thân thiện cho nhân viên bán hàng.
+                        </p>
+                        <div class="flex flex-wrap gap-2 text-xs font-medium pt-2">
+                            <span class="bg-gray-700 text-white px-2 py-1 rounded-full">C#</span>
+                            <span class="bg-gray-700 text-white px-2 py-1 rounded-full">.NET Core / ASP.NET API</span>
+                            <span class="bg-gray-700 text-white px-2 py-1 rounded-full">Entity Framework Core</span>
+                            <span class="bg-gray-700 text-white px-2 py-1 rounded-full">SQL Server</span>
+                        </div>
+                        <a href="#" target="_blank" class="inline-flex items-center space-x-1 text-[#00b4d8] hover:text-[#0077b6] text-sm font-medium pt-2">
+                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                            <span>Xem Code (Private Repo)</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phần 10: Tác phẩm Cá nhân (Mới) -->
+        <section id="portfolio" class="pt-12">
+            <h3 class="text-3xl font-bold mb-8 text-center text-white">TÁC PHẨM CỦA TÔI</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Tác phẩm 1: Blog cá nhân về công nghệ -->
+                <div class="card-border rounded-xl p-6 space-y-3 transition duration-300 hover:bg-[#161b22]/70">
+                    <i data-lucide="book-open-text" class="w-8 h-8 text-[#00b4d8]"></i>
+                    <h4 class="text-xl font-semibold text-white">Blog Cá Nhân Về Design</h4>
+                    <p class="text-gray-400 text-sm">
+                        Tổng hợp các bài viết chuyên sâu về kiến thức Design và những kinh nghiệm chuyên môn.
+                    </p>
+                    <a href="#" target="_blank" class="inline-flex items-center space-x-1 text-[#00b4d8] hover:text-[#0077b6] text-sm font-medium pt-2">
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                        <span>Đọc Blog</span>
+                    </a>
+                </div>
+
+                <!-- Tác phẩm 2: Bộ Icon/Asset tự thiết kế -->
+                <div class="card-border rounded-xl p-6 space-y-3 transition duration-300 hover:bg-[#161b22]/70">
+                    <i data-lucide="palette" class="w-8 h-8 text-[#00b4d8]"></i>
+                    <h4 class="text-xl font-semibold text-white">Bộ Assets UI/UX Vector</h4>
+                    <p class="text-gray-400 text-sm">
+                        Tập hợp các icon và component mẫu được thiết kế trên Figma, sử dụng nguyên tắc Atomic Design.
+                    </p>
+                    <a href="#" target="_blank" class="inline-flex items-center space-x-1 text-[#00b4d8] hover:text-[#0077b6] text-sm font-medium pt-2">
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                        <span>Xem trên Figma</span>
+                    </a>
+                </div>
+                
+                <!-- Tác phẩm 3: Thư viện mã nguồn mở nhỏ -->
+                <div class="card-border rounded-xl p-6 space-y-3 transition duration-300 hover:bg-[#161b22]/70">
+                    <i data-lucide="codesandbox" class="w-8 h-8 text-[#00b4d8]"></i>
+                    <h4 class="text-xl font-semibold text-white">Thư viện 'Simple State' (npm)</h4>
+                    <p class="text-gray-400 text-sm">
+                        Thư viện quản lý trạng thái nhỏ gọn cho React, tập trung vào hiệu suất và dễ sử dụng.
+                    </p>
+                    <a href="#" target="_blank" class="inline-flex items-center space-x-1 text-[#00b4d8] hover:text-[#0077b6] text-sm font-medium pt-2">
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                        <span>Xem trên NPM/GitHub</span>
+                    </a>
+                </div>
+                
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#161b22] mt-16 p-6 text-center text-gray-500">
+        <div class="max-w-7xl mx-auto">
+            <p>&copy; 2025 Cao Phước Hưng. Portfolio cá nhân.</p>
+            <div class="flex justify-center space-x-4 mt-2">
+                <a href="https://facebook.com/vana-dev" target="_blank" class="hover:text-[#00b4d8] transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                <a href="https://github.com/vana-dev" target="_blank" class="hover:text-[#00b4d8] transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
+                <a href="mailto:van.a.dev@example.com" class="hover:text-[#00b4d8] transition-colors"><i data-lucide="mail" class="w-5 h-5"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Khởi tạo Lucide Icons sau khi nội dung được tải -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
